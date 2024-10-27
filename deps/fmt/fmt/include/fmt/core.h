@@ -325,7 +325,7 @@ using wstring_view = basic_string_view<wchar_t>;
 
 #ifndef __cpp_char8_t
 // A UTF-8 code unit type.
-enum char8_t : unsigned char {};
+using char8_t = unsigned int;
 #endif
 
 /** Specifies if ``T`` is a character type. Can be specialized by users. */

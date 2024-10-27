@@ -4,3 +4,6 @@ install/
 coverage.info
 
 .ycm*
+compile_commands.json
+.cache
+.vscode

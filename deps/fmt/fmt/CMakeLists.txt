@@ -68,6 +68,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH}
 include(cxx14)
 include(CheckCXXCompilerFlag)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS ON)
+
 set(FMT_REQUIRED_FEATURES cxx_auto_type cxx_variadic_templates)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")

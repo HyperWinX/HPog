@@ -1,5 +1,3 @@
-add_subdirectory(googletest)
-
 set(TEST_FILES
 	pog_tests.cpp
 	test_automaton.cpp
@@ -24,4 +22,4 @@ if (MSVC)
 	# This flag is needed for MSVC because test_parser.cpp exceeds limit of number of section in Debug x64 build
 	set_source_files_properties(test_parser.cpp PROPERTIES COMPILE_FLAGS /bigobj)
 endif()
-target_link_libraries(pog_tests pog googletest)
+target_link_libraries(pog_tests pog gtest)
