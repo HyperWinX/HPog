@@ -43,12 +43,3 @@ set_target_properties(re2::re2 PROPERTIES
 )
 target_link_libraries(re2::re2 INTERFACE Threads::Threads)
 add_dependencies(re2::re2 re2-dep)
-
-install(
-	FILES ${RE2_LIBRARY}
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
-)
-install(
-	DIRECTORY ${RE2_INCLUDE_DIR}/re2/
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/pog/re2
-)
