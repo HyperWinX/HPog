@@ -117,7 +117,7 @@ public:
 		_tokenizer.enter_state(state_name);
 	}
 
-	void push_input_stream(std::istream& input)
+	void push_input_stream(std::string& input)
 	{
 		_tokenizer.push_input_stream(input);
 	}
@@ -132,13 +132,13 @@ public:
 		_tokenizer.global_action(std::move(global_action));
 	}
 
-	std::optional<ValueT> parse(std::istream& input)
+	std::optional<ValueT> parse(std::string& contents)
 	{
 		_tokenizer.enter_state(std::string{decltype(_tokenizer)::DefaultState});
 
 		std::optional<TokenMatchType> token;
 		_tokenizer.clear_input_streams();
-		_tokenizer.push_input_stream(input);
+		_tokenizer.push_input_stream(contents);
 
 		std::deque<std::pair<std::uint32_t, std::optional<ValueT>>> stack;
 		stack.emplace_back(0, std::nullopt);

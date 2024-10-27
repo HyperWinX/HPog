@@ -109,17 +109,9 @@ public:
 		return _tokens.back().get();
 	}
 
-	void push_input_stream(std::istream& stream)
+	void push_input_stream(std::string& stream)
 	{
-		std::string input;
-		std::vector<char> block(4096);
-		while (stream.good())
-		{
-			stream.read(block.data(), block.size());
-			input.append(std::string_view(block.data(), stream.gcount()));
-		}
-
-		_input_stack.emplace_back(InputStream{std::make_unique<std::string>(std::move(input)), re2::StringPiece{}, false});
+		_input_stack.emplace_back(InputStream{std::make_unique<std::string>(std::move(stream)), re2::StringPiece{}, false});
 		_input_stack.back().stream = re2::StringPiece{_input_stack.back().content->c_str()};
 	}
 

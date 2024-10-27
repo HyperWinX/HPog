@@ -23,19 +23,19 @@ RepeatingAs) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("a");
+	std::string input1("a");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 1);
 
-	std::stringstream input2("aaaa");
+	std::string input2("aaaa");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 4);
 
 	try
 	{
-		std::stringstream input3("aa aaa");
+		std::string input3("aa aaa");
 		p.parse(input3);
 		FAIL() << "Expected syntax error";
 	}
@@ -62,17 +62,17 @@ RepeatingAsWithIgnoringWhitespaces) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("a");
+	std::string input1("a");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 1);
 
-	std::stringstream input2("aaaa");
+	std::string input2("aaaa");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 4);
 
-	std::stringstream input3("aa aaa");
+	std::string input3("aa aaa");
 	result = p.parse(input3);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 5);
@@ -95,19 +95,19 @@ SameNumberOfAsAndBs) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("ab");
+	std::string input1("ab");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 1);
 
-	std::stringstream input2("aaabbb");
+	std::string input2("aaabbb");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 3);
 
 	try
 	{
-		std::stringstream input3("aabbb");
+		std::string input3("aabbb");
 		p.parse(input3);
 		FAIL() << "Expected syntax error";
 	}
@@ -118,7 +118,7 @@ SameNumberOfAsAndBs) {
 
 	try
 	{
-		std::stringstream input4("aaabb");
+		std::string input4("aaabb");
 		p.parse(input4);
 		FAIL() << "Expected syntax error";
 	}
@@ -145,19 +145,19 @@ SymbolDescriptionInErrorMessages) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("ab");
+	std::string input1("ab");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 1);
 
-	std::stringstream input2("aaabbb");
+	std::string input2("aaabbb");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 3);
 
 	try
 	{
-		std::stringstream input3("aabbb");
+		std::string input3("aabbb");
 		p.parse(input3);
 		FAIL() << "Expected syntax error";
 	}
@@ -168,7 +168,7 @@ SymbolDescriptionInErrorMessages) {
 
 	try
 	{
-		std::stringstream input4("aaabb");
+		std::string input4("aaabb");
 		p.parse(input4);
 		FAIL() << "Expected syntax error";
 	}
@@ -200,7 +200,7 @@ LalrButNotLrNorNqlalr) {
 		.production("g");
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input("agc");
+	std::string input("agc");
 	auto result = p.parse(input);
 	EXPECT_TRUE(result);
 }
@@ -236,17 +236,17 @@ Precedence) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("2 + 3 * 4 + 5");
+	std::string input1("2 + 3 * 4 + 5");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 19);
 
-	std::stringstream input2("-5 - 3 - -10");
+	std::string input2("-5 - 3 - -10");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 2);
 
-	std::stringstream input3("5 + -3 * 10");
+	std::string input3("5 + -3 * 10");
 	result = p.parse(input3);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), -25);
@@ -330,7 +330,7 @@ Conflicts3) {
 	EXPECT_EQ(report.number_of_issues(), 1u);
 	EXPECT_EQ(report.to_string(), "Shift-reduce conflict of symbol ')' and rule 'E -> PE' in state 6");
 
-	std::stringstream input1("(((a)))");
+	std::string input1("(((a)))");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), (std::vector<std::string>{
@@ -370,7 +370,7 @@ ResolveConflictWithPrecedence) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("(((a)))");
+	std::string input1("(((a)))");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), (std::vector<std::string>{
@@ -401,19 +401,19 @@ MoveOnlyType) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("a");
+	std::string input1("a");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(*result.value().get(), 1);
 
-	std::stringstream input2("aaaa");
+	std::string input2("aaaa");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(*result.value().get(), 4);
 
 	try
 	{
-		std::stringstream input3("aa aaa");
+		std::string input3("aa aaa");
 		p.parse(input3);
 		FAIL() << "Expected syntax error";
 	}
@@ -444,7 +444,7 @@ EndTokenAction) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("aaaa");
+	std::string input1("aaaa");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 4);
@@ -475,7 +475,7 @@ TokenActionsCalledOnce) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("aaaa");
+	std::string input1("aaaa");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 4);
@@ -557,7 +557,7 @@ MultistateTokenizer) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input(
+	std::string input(
 		"abc = \"xyz\"\n"
 		"x = \"ab\\n\\t\\r\\x20cd\""
 	);
@@ -631,7 +631,7 @@ MidruleActionsToCheckRedefinition) {
 		);
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1(
+	std::string input1(
 R"(function x {
 	var y = 5;
 	var z = 10;
@@ -645,7 +645,7 @@ R"(function x {
 	defs.clear();
 	redefs.clear();
 
-	std::stringstream input2(
+	std::string input2(
 R"(function x {
 	var y = 5;
 	var x = 10;
@@ -659,7 +659,7 @@ R"(function x {
 	defs.clear();
 	redefs.clear();
 
-	std::stringstream input3(
+	std::string input3(
 R"(function x {
 	var y = 5;
 	var z = 10;
@@ -684,7 +684,7 @@ InputStreamStackManipulation) {
 		"40"
 	};
 
-	std::vector<std::unique_ptr<std::stringstream>> inputs;
+	std::vector<std::unique_ptr<std::string>> inputs;
 
 	Parser<int> p;
 
@@ -693,7 +693,7 @@ InputStreamStackManipulation) {
 	p.token("\\*").symbol("*").precedence(2, Associativity::Left);
 	p.token("include [0-9]+").action([&](std::string_view str) {
 		auto stream_idx = std::stoi(std::string{str.begin() + 8, str.end()});
-		inputs.emplace_back(std::make_unique<std::stringstream>(input_streams[stream_idx]));
+		inputs.emplace_back(std::make_unique<std::string>(input_streams[stream_idx]));
 		p.push_input_stream(*inputs.back().get());
 		return 0;
 	});
@@ -713,7 +713,7 @@ InputStreamStackManipulation) {
 
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input("include 1 + include 2 * include 3 + 5");
+	std::string input("include 1 + include 2 * include 3 + 5");
 	auto result = p.parse(input);
 
 	EXPECT_TRUE(result);
@@ -754,7 +754,7 @@ RuleActionsAccessingDataBeforeMidruleAction) {
 
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input("function abc a a a a a");
+	std::string input("function abc a a a a a");
 	auto result = p.parse(input);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 115);
@@ -838,7 +838,7 @@ MultistateTokenizerWithExplicitCalls) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input(
+	std::string input(
 		"abc = \"xyz\"\n"
 		"x = \"ab\\n\\t\\r\\x20cd\""
 	);
@@ -874,19 +874,19 @@ EndInputInNonDefaultTokenizerState) {
 		});
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("a");
+	std::string input1("a");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 1);
 
-	std::stringstream input2("bbbba");
+	std::string input2("bbbba");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value(), 5);
 
 	try
 	{
-		std::stringstream input3("bbbbab");
+		std::string input3("bbbbab");
 		p.parse(input3);
 		FAIL() << "Expected syntax error";
 	}
@@ -913,11 +913,11 @@ IncludesRelationCalulcatedCorrectlyForSameRightHandSifePrefix) {
 		.production("a");
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("a");
+	std::string input1("a");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 
-	std::stringstream input2("ab");
+	std::string input2("ab");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 }
@@ -947,13 +947,13 @@ GlobalTokenizerAction) {
 		.production();
 	EXPECT_TRUE(p.prepare());
 
-	std::stringstream input1("aaaaa");
+	std::string input1("aaaaa");
 	auto result = p.parse(input1);
 	EXPECT_TRUE(result);
 	EXPECT_THAT(location, Pair(Eq(1), Eq(5)));
 
 	location = {1, 0};
-	std::stringstream input2("aaa \nbbb bbb\n \n\na");
+	std::string input2("aaa \nbbb bbb\n \n\na");
 	result = p.parse(input2);
 	EXPECT_TRUE(result);
 	EXPECT_THAT(location, Pair(Eq(5), Eq(1)));

@@ -53,7 +53,7 @@ NextToken) {
 	t.add_token("ccc", nullptr, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
 	t.prepare();
 
-	std::stringstream input("aaacccbbb");
+	std::string input("aaacccbbb");
 	t.push_input_stream(input);
 
 	auto result = t.next_token();
@@ -81,7 +81,7 @@ NextTokenWithUnknownToken) {
 	t.add_token("ccc", nullptr, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
 	t.prepare();
 
-	std::stringstream input("aaaccbbb");
+	std::string input("aaaccbbb");
 	t.push_input_stream(input);
 
 	auto result = t.next_token();
@@ -105,7 +105,7 @@ NextTokenLongestMatchWins) {
 	t.add_token("aa", a2, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
 	t.prepare();
 
-	std::stringstream input("aaaaa");
+	std::string input("aaaaa");
 	t.push_input_stream(input);
 
 	auto result = t.next_token();
@@ -124,7 +124,7 @@ NextTokenIndexWinsInCaseOfEqualMatch) {
 	t.add_token("a*", an, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
 	t.prepare();
 
-	std::stringstream input("aaa");
+	std::string input("aaa");
 	t.push_input_stream(input);
 
 	auto result = t.next_token();
@@ -157,7 +157,7 @@ TokenActionsPerformed) {
 	});
 	t.prepare();
 
-	std::stringstream input("aabbbbaaaaabb");
+	std::string input("aabbbbaaaaabb");
 	t.push_input_stream(input);
 
 	for (auto i = 0; i < 5; ++i)
@@ -187,7 +187,7 @@ NextTokenGlobalActionPerformed) {
 	t.add_token("b+", b, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
 	t.prepare();
 
-	std::stringstream input("aabbbbaaaaabb");
+	std::string input("aabbbbaaaaabb");
 	t.push_input_stream(input);
 
 	for (auto i = 0; i < 5; ++i)
@@ -208,14 +208,14 @@ InputStreamStackManipulation) {
 	t.add_token("bbb", b, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
 	t.prepare();
 
-	std::stringstream input("aaabbb");
+	std::string input("aaabbb");
 	t.push_input_stream(input);
 
 	auto result = t.next_token();
 	EXPECT_TRUE(result);
 	EXPECT_EQ(result.value().symbol, a);
 
-	std::stringstream input2("aaaaaa");
+	std::string input2("aaaaaa");
 	t.push_input_stream(input2);
 
 	result = t.next_token();
@@ -254,14 +254,14 @@ StatesAndTransitions) {
 	b_t->set_transition_to_state(std::string{decltype(t)::DefaultState});
 	t.prepare();
 
-	std::stringstream input("aaabbb");
+	std::string input("aaabbb");
 	t.push_input_stream(input);
 	EXPECT_TRUE(t.next_token());
 	EXPECT_TRUE(t.next_token());
 	EXPECT_TRUE(t.next_token());
 	t.pop_input_stream();
 
-	std::stringstream input2("aaaaaa");
+	std::string input2("aaaaaa");
 	t.push_input_stream(input2);
 	EXPECT_TRUE(t.next_token());
 	EXPECT_FALSE(t.next_token());
@@ -281,12 +281,12 @@ EnterState) {
 
 	t.enter_state("state1");
 
-	std::stringstream input("aaabbb");
+	std::string input("aaabbb");
 	t.push_input_stream(input);
 	EXPECT_FALSE(t.next_token());
 	t.pop_input_stream();
 
-	std::stringstream input2("bbbbbb");
+	std::string input2("bbbbbb");
 	t.push_input_stream(input2);
 	EXPECT_TRUE(t.next_token());
 	EXPECT_TRUE(t.next_token());
