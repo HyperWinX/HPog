@@ -27,14 +27,6 @@ ExternalProject_Add(
 		-DFMT_DOC=OFF
 	BUILD_COMMAND
 		${FMT_BUILD_COMMAND}
-	INSTALL_COMMAND
-		${FMT_INSTALL_COMMAND}
-)
-
-ExternalProject_Add_Step(
-	fmt-dep rename
-	DEPENDEES install
-	COMMAND ${CMAKE_COMMAND} -E rename $<IF:$<CONFIG:Debug>,${FMT_INSTALLED_LIBRARY_DEBUG},${FMT_INSTALLED_LIBRARY}> ${FMT_LIBRARY}
 )
 
 add_library(fmt::fmt STATIC IMPORTED GLOBAL)
@@ -44,11 +36,3 @@ set_target_properties(fmt::fmt PROPERTIES
 )
 add_dependencies(fmt::fmt fmt-dep)
 
-install(
-	FILES ${FMT_LIBRARY}
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
-)
-install(
-	DIRECTORY ${FMT_INCLUDE_DIR}/fmt/
-	DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/pog/fmt
-)
