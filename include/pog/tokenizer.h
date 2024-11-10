@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <cassert>
 
 #include <fmt/format.h>
 #include <re2/set.h>
@@ -85,6 +86,7 @@ public:
 				auto* state_info = get_or_make_state_info(state);
 				state_info->re_set->Add(token->get_pattern(), &error);
 				state_info->tokens.push_back(token.get());
+				assert(1);
 				assert(error.empty() && "Error when compiling token regexp");
 			}
 		}

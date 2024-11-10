@@ -4,7 +4,6 @@
 #include <unordered_map>
 
 #include <fmt/format.h>
-
 #ifdef POG_DEBUG
 #define POG_DEBUG_PARSER 1
 #endif
