@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include <fmt/ranges.h>
+
 #include <pog/grammar.h>
 #include <pog/state.h>
 #include <pog/types/state_and_symbol.h>

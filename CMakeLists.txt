@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.28)
 project(pog
 	LANGUAGES CXX
 	VERSION 0.5.2
@@ -37,19 +37,16 @@ set(POG_PC_INSTALL_FILES     "${POG_PC_CONFIG_FILE}")
 ## Requirements
 ### Threads - because of RE2
 find_package(Threads REQUIRED)
+find_package(re2 REQUIRED)
+find_package(fmt REQUIRED)
 
 ## Add deps folder to resolve bundled dependencies.
-add_subdirectory(deps)
 add_subdirectory(tests)
 
 ## Library.
 add_library(pog INTERFACE)
 target_sources(pog INTERFACE ${POG_FILES})
-if(MSVC)
-	target_compile_options(pog INTERFACE /W3)
-else()
-	target_compile_options(pog INTERFACE -Wall -Wextra -Wno-empty-body)
-endif()
+target_compile_options(pog INTERFACE -Wall -Wextra -Wno-empty-body)
 target_include_directories(pog INTERFACE
 	"$<BUILD_INTERFACE:${POG_INCLUDE_DIR}>"
 	"$<INSTALL_INTERFACE:${POG_INSTALL_INCLUDE_DIR}>"

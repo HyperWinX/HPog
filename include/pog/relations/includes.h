@@ -3,6 +3,8 @@
 #include <pog/relations/relation.h>
 #include <pog/types/state_and_symbol.h>
 
+#include <fmt/ranges.h>
+
 namespace pog {
 
 /**
@@ -135,8 +137,8 @@ node [shape=circle];
 
 {}
 }})",
-			fmt::join(states_str.begin(), states_str.end(), "\n"),
-			fmt::join(edges_str.begin(), edges_str.end(), "\n")
+			fmt::join({states_str.begin(), states_str.end()}, "\n"),
+			fmt::join({edges_str.begin(), edges_str.end()}, "\n")
 		);
 	}
 };

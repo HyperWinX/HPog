@@ -3,6 +3,8 @@
 #include <numeric>
 #include <unordered_set>
 
+#include <fmt/ranges.h>
+
 #include <pog/filter_view.h>
 #include <pog/item.h>
 #include <pog/utils.h>
