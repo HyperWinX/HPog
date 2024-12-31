@@ -130,6 +130,35 @@ public:
 			}
 		}
 
+		std::ostringstream oss;
+
+    oss << R"(digraph Includes {
+node [shape=circle];
+
+)";
+
+    // Join states_str with newlines
+    for (size_t i = 0; i < states_str.size(); ++i) {
+        oss << states_str[i];
+        if (i != states_str.size() - 1) {
+            oss << "\n";
+        }
+    }
+
+    oss << "\n\n";
+
+    // Join edges_str with newlines
+    for (size_t i = 0; i < edges_str.size(); ++i) {
+        oss << edges_str[i];
+        if (i != edges_str.size() - 1) {
+            oss << "\n";
+        }
+    }
+
+    oss << "\n}";
+
+    return oss.str();
+		/*
 		return fmt::format(R"(digraph Includes {{
 node [shape=circle];
 
@@ -140,6 +169,7 @@ node [shape=circle];
 			fmt::join({states_str.begin(), states_str.end()}, "\n"),
 			fmt::join({edges_str.begin(), edges_str.end()}, "\n")
 		);
+		*/
 	}
 };
 
