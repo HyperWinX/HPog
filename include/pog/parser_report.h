@@ -3,6 +3,8 @@
 #include <variant>
 #include <vector>
 
+#include <fmt/ranges.h>
+
 #include <pog/rule.h>
 #include <pog/state.h>
 

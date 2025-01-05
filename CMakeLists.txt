@@ -37,9 +37,10 @@ set(POG_PC_INSTALL_FILES     "${POG_PC_CONFIG_FILE}")
 ## Requirements
 ### Threads - because of RE2
 find_package(Threads REQUIRED)
+find_package(re2 REQUIRED)
+find_package(fmt REQUIRED)
 
 ## Add deps folder to resolve bundled dependencies.
-add_subdirectory(deps)
 add_subdirectory(tests)
 
 ## Library.
