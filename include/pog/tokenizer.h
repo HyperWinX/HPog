@@ -205,8 +205,9 @@ public:
 
 				return TokenMatchType{best_match->get_symbol(), std::move(value), static_cast<std::size_t>(longest_match)};
 			}
-			else
+			else {
 				debug_tokenizer("At the end of input");
+			}
 
 			// There is still something on stack but we've reached the end and noone popped it so return end symbol to parser
 			return _grammar->get_end_of_input_symbol();

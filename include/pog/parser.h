@@ -157,8 +157,9 @@ public:
 
 				debug_parser("Tokenizer returned new token with symbol \'{}\'", token.value().symbol->get_name());
 			}
-			else
+			else {
 				debug_parser("Reusing old token with symbol \'{}\'", token.value().symbol->get_name());
+			}
 
 			debug_parser("Top of the stack is state {}", stack.back().first);
 
