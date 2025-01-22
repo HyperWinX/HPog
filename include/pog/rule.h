@@ -11,6 +11,7 @@
 
 #include <pog/symbol.h>
 #include <pog/token.h>
+#include <pog/line_spec.h>
 
 namespace pog {
 
@@ -22,7 +23,7 @@ class Rule
 {
 public:
 	using SymbolType = Symbol<ValueT>;
-	using CallbackType = std::function<ValueT(Parser<ValueT>&, std::vector<ValueT>&&)>;
+	using CallbackType = std::function<ValueT(Parser<ValueT>&, std::vector<TokenWithLineSpec<ValueT>>&&)>;
 
 	Rule(std::uint32_t index, const SymbolType* lhs, const std::vector<const SymbolType*>& rhs)
 		: _index(index), _lhs(lhs), _rhs(rhs), _action(), _midrule_size(std::nullopt), _start(false) {}

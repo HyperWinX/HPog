@@ -25,6 +25,7 @@
 #include <pog/symbol.h>
 #include <pog/token_builder.h>
 #include <pog/tokenizer.h>
+#include <pog/line_spec.h>
 
 #include <pog/operations/read.h>
 #include <pog/operations/follow.h>
@@ -36,12 +37,6 @@ namespace pog {
 
 template <typename ValueT>
 class HtmlReport;
-
-template <typename ValueT>
-class TokenWithLineSpec {
-  ValueT value;
-  LineSpecialization& line_spec;
-};
 
 template <typename ValueT>
 class Parser
@@ -199,7 +194,7 @@ public:
 					// std::move(*this) is performed only when value_or() is called from r-value
 					//
 					// Also do not pop from stack here because midrule actions can still return us arguments back
-					action_arg.insert(action_arg.begin(), std::move(stack[stack.size() - i - 1].second).value_or(ValueT{}));
+					action_arg.insert(action_arg.begin(), std::move(stack[stack.size() - i - 1].second).value_or(TokenWithLineSpec<ValueT>{}));
 				}
 
 				// What left on the stack now determines what state we get into now

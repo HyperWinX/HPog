@@ -19,25 +19,16 @@
 
 #include <pog/grammar.h>
 #include <pog/token.h>
+#include <pog/line_spec.h>
 
 namespace pog {
-
-struct LineSpecialization {
-  LineSpecialization(std::uint32_t line, std::uint16_t offset, std::uint16_t length)
-    : line(line)
-    , offset(offset)
-    , length(length) { }
-  std::uint32_t line;
-  std::uint16_t offset;
-  std::uint16_t length;
-};
 
 template <typename ValueT>
 struct TokenMatch
 {
 	TokenMatch(const Symbol<ValueT>* sym) : symbol(sym), value(), match_length(0) {}
 	template <typename T>
-	TokenMatch(const Symbol<ValueT>* sym, T&& v, std::size_t len, LineSpecialization spec) : symbol(sym), value(std::forward<T>(v)), match_length(len), line_spec(spec) {}
+	TokenMatch(const Symbol<ValueT>* sym, T&& v, std::size_t len, LineSpecialization spec) : symbol(sym), line_spec(spec), value(std::forward<T>(v)), match_length(len) {}
 	TokenMatch(const TokenMatch&) = default;
 	TokenMatch(TokenMatch&&) noexcept = default;
 
