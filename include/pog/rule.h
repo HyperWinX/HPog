@@ -15,11 +15,14 @@
 namespace pog {
 
 template <typename ValueT>
+class Parser;
+
+template <typename ValueT>
 class Rule
 {
 public:
 	using SymbolType = Symbol<ValueT>;
-	using CallbackType = std::function<ValueT(std::vector<ValueT>&&)>;
+	using CallbackType = std::function<ValueT(Parser<ValueT>&, std::vector<ValueT>&&)>;
 
 	Rule(std::uint32_t index, const SymbolType* lhs, const std::vector<const SymbolType*>& rhs)
 		: _index(index), _lhs(lhs), _rhs(rhs), _action(), _midrule_size(std::nullopt), _start(false) {}

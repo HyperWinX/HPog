@@ -38,6 +38,12 @@ template <typename ValueT>
 class HtmlReport;
 
 template <typename ValueT>
+class TokenWithLineSpec {
+  ValueT value;
+  LineSpecialization& line_spec;
+};
+
+template <typename ValueT>
 class Parser
 {
 public:
@@ -139,7 +145,7 @@ public:
 		_tokenizer.clear_input_streams();
 		_tokenizer.push_input_stream(contents);
 
-		std::deque<std::pair<std::uint32_t, std::optional<ValueT>>> stack;
+		std::deque<std::pair<std::uint32_t, std::optional<TokenWithLineSpec<ValueT>>>> stack;
 		stack.emplace_back(0, std::nullopt);
 
 		while (!stack.empty())
@@ -149,7 +155,7 @@ public:
 			if (!token)
 			{
 				token = _tokenizer.next_token();
-				if (!token)
+				if (!token) [[unlikely]]
 				{
 					auto expected_symbols = _parsing_table.get_expected_symbols_from_state(_automaton.get_state(stack.back().first));
 					throw SyntaxError(expected_symbols);
@@ -181,7 +187,7 @@ public:
 				// Each symbol on right-hand side of the rule should have record on the stack
 				// We'll pop them out and put them in reverse order so user have them available
 				// left-to-right and not right-to-left.
-				std::vector<ValueT> action_arg;
+				std::vector<TokenWithLineSpec<ValueT>> action_arg;
 				action_arg.reserve(reduce.rule->get_number_of_required_arguments_for_action());
 				assert(stack.size() >= action_arg.capacity() && "Stack is too small");
 
@@ -207,7 +213,7 @@ public:
 					return std::nullopt;
 				}
 
-				auto action_result = reduce.rule->has_action() ? reduce.rule->perform_action(std::move(action_arg)) : ValueT{};
+				auto action_result = reduce.rule->has_action() ? reduce.rule->perform_action(*this, std::move(action_arg)) : ValueT{};
 
 				// Midrule actions only borrowed arguments and it is returning them back
 				if (reduce.rule->is_midrule())

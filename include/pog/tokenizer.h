@@ -22,12 +22,22 @@
 
 namespace pog {
 
+struct LineSpecialization {
+  LineSpecialization(std::uint32_t line, std::uint16_t offset, std::uint16_t length)
+    : line(line)
+    , offset(offset)
+    , length(length) { }
+  std::uint32_t line;
+  std::uint16_t offset;
+  std::uint16_t length;
+};
+
 template <typename ValueT>
 struct TokenMatch
 {
 	TokenMatch(const Symbol<ValueT>* sym) : symbol(sym), value(), match_length(0) {}
 	template <typename T>
-	TokenMatch(const Symbol<ValueT>* sym, T&& v, std::size_t len) : symbol(sym), value(std::forward<T>(v)), match_length(len) {}
+	TokenMatch(const Symbol<ValueT>* sym, T&& v, std::size_t len, LineSpecialization spec) : symbol(sym), value(std::forward<T>(v)), match_length(len), line_spec(spec) {}
 	TokenMatch(const TokenMatch&) = default;
 	TokenMatch(TokenMatch&&) noexcept = default;
 
@@ -35,6 +45,7 @@ struct TokenMatch
 	TokenMatch& operator=(TokenMatch&&) noexcept = default;
 
 	const Symbol<ValueT>* symbol;
+  LineSpecialization line_spec;
 	ValueT value;
 	std::size_t match_length;
 };
@@ -132,6 +143,16 @@ public:
 		_global_action = std::move(global_action);
 	}
 
+  void reset_line_offset()
+  {
+    _current_offset = 0;
+  }
+
+  std::uint32_t& get_line_counter()
+  {
+    return _current_line;
+  }
+
 	std::optional<TokenMatchType> next_token()
 	{
 		bool repeat = true;
@@ -152,7 +173,7 @@ public:
 				_current_state->re_set->Match(current_input.stream, &matched_patterns);
 
 				// Haven't matched anything, tokenization failure, we will get into endless loop
-				if (matched_patterns.empty())
+				if (matched_patterns.empty()) [[unlikely]]
 				{
 					debug_tokenizer("Nothing matched on the current input");
 					return std::nullopt;
@@ -190,6 +211,7 @@ public:
 				}
 
 				std::string_view token_str{current_input.stream.data(), static_cast<std::size_t>(longest_match)};
+        _current_offset += longest_match;
 				current_input.stream.remove_prefix(longest_match);
 				debug_tokenizer("Matched \'{}\' with token \'{}\' (index {})", token_str, best_match->get_pattern(), best_match->get_index());
 
@@ -203,7 +225,16 @@ public:
 				if (!best_match->has_symbol())
 					continue;
 
-				return TokenMatchType{best_match->get_symbol(), std::move(value), static_cast<std::size_t>(longest_match)};
+        return TokenMatchType {
+          best_match->get_symbol(), 
+          std::move(value),
+          static_cast<std::size_t>(longest_match),
+          LineSpecialization {
+            _current_line,
+            _current_offset,
+            static_cast<std::uint16_t>(longest_match)
+          }
+        };
 			}
 			else {
 				debug_tokenizer("At the end of input");
@@ -250,6 +281,8 @@ private:
 	std::vector<InputStream> _input_stack;
 	StateInfoType* _current_state;
 	CallbackType _global_action;
+  std::uint32_t _current_line;
+  std::uint16_t _current_offset;
 };
 
 } // namespace pog
