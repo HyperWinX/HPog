@@ -224,7 +224,7 @@ public:
           static_cast<std::size_t>(longest_match),
           LineSpecialization {
             _current_line,
-            _current_offset - longest_match,
+            static_cast<std::uint16_t>(_current_offset - longest_match),
             static_cast<std::uint16_t>(longest_match)
           }
         };
