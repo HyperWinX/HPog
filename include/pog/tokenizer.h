@@ -72,6 +72,8 @@ public:
 
 	Tokenizer(const GrammarType* grammar) : _grammar(grammar), _tokens(), _state_info(), _input_stack(), _current_state(nullptr), _global_action()
 	{
+    _current_line = 1;
+    _current_offset = 0;
 		_current_state = get_or_make_state_info(std::string{DefaultState});
 		add_token("$", nullptr, std::vector<std::string>{std::string{DefaultState}});
 	}
@@ -222,7 +224,7 @@ public:
           static_cast<std::size_t>(longest_match),
           LineSpecialization {
             _current_line,
-            _current_offset,
+            _current_offset - longest_match,
             static_cast<std::uint16_t>(longest_match)
           }
         };

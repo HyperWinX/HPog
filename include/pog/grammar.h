@@ -1,5 +1,6 @@
 #pragma once
 
+#include "pog/line_spec.h"
 #include <memory>
 #include <unordered_set>
 #include <vector>
@@ -87,8 +88,8 @@ public:
 
 	void set_start_symbol(const SymbolType* symbol)
 	{
-		auto start_rule = add_rule(_internal_start_symbol, std::vector<const SymbolType*>{symbol, _internal_end_of_input}, [](auto&& args) {
-			return std::move(args[0]);
+		auto start_rule = add_rule(_internal_start_symbol, std::vector<const SymbolType*>{symbol, _internal_end_of_input}, [](Parser<ValueT>&, std::vector<TokenWithLineSpec<ValueT>>&& args) {
+			return std::move(args[0].value);
 		});
 		start_rule->set_start_rule(true);
 		_start_rule = start_rule;

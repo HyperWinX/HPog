@@ -22,15 +22,11 @@ struct LineSpecialization {
 
 template <typename ValueT>
 struct TokenWithLineSpec {
-  TokenWithLineSpec() {
-    static_assert(std::is_default_constructible_v<ValueT>, "ValueT should be default constructible");
-  }
-  TokenWithLineSpec(TokenWithLineSpec<ValueT>&) = default;
-  TokenWithLineSpec(TokenWithLineSpec<ValueT>&&) = default;
-  TokenWithLineSpec<ValueT>& operator=(TokenWithLineSpec<ValueT>&) = default;
+  TokenWithLineSpec() = default;
+  TokenWithLineSpec(ValueT& val, LineSpecialization spec) : value(val), line_spec(spec) { }
 
   ValueT value;
-  LineSpecialization* line_spec;
+  LineSpecialization line_spec;
 };
 
 }

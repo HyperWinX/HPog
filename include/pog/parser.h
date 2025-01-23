@@ -1,6 +1,8 @@
 #pragma once
 
+#include <queue>
 #include <deque>
+#include <type_traits>
 #include <unordered_map>
 
 #include <fmt/format.h>
@@ -32,6 +34,12 @@
 #include <pog/operations/lookahead.h>
 #include <pog/relations/includes.h>
 #include <pog/relations/lookback.h>
+
+namespace HCAsm {
+
+class HCAsmCompiler;
+
+}
 
 namespace pog {
 
@@ -132,8 +140,15 @@ public:
 		_tokenizer.global_action(std::move(global_action));
 	}
 
+  std::string& get_top_file()
+  {
+    return files.back();
+  }
+
 	std::optional<ValueT> parse(std::string& contents)
 	{
+    files.push(contents);
+
 		_tokenizer.enter_state(std::string{decltype(_tokenizer)::DefaultState});
 
 		std::optional<TokenMatchType> token;
@@ -209,7 +224,6 @@ public:
 				}
 
 				auto action_result = reduce.rule->has_action() ? reduce.rule->perform_action(*this, std::move(action_arg)) : ValueT{};
-
 				// Midrule actions only borrowed arguments and it is returning them back
 				if (reduce.rule->is_midrule())
 				{
@@ -227,7 +241,7 @@ public:
 
 				stack.emplace_back(
 					maybe_next_state.value()->get_index(),
-					std::move(action_result)
+					std::optional { TokenWithLineSpec<ValueT> { action_result, {} } }
 				);
 			}
 			else if (std::holds_alternative<ShiftActionType>(action))
@@ -241,7 +255,7 @@ public:
 				// Return by rvalue is performed only when value() is called from r-value
 				stack.emplace_back(
 					shift.state->get_index(),
-					std::move(token).value().value
+					std::optional { TokenWithLineSpec<ValueT> { token.value().value, token.value().line_spec } }
 				);
 
 				// We did shift so the token value is moved onto stack, "forget" the token
@@ -254,7 +268,7 @@ public:
 				// We need to do this in order to perform move together with value()
 				// See: https://en.cppreference.com/w/cpp/utility/optional/value
 				// Return by rvalue is performed only when value() is called from r-value
-				return std::move(stack.back().second).value();
+				return { std::move(stack.back().second).value().value };
 			}
 		}
 
@@ -287,6 +301,7 @@ private:
 	std::vector<TokenBuilderType> _token_builders;
 
 	ParserReportType _report;
+  std::queue<std::string> files;
 };
 
 } // namespace pog
