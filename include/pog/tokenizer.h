@@ -136,12 +136,12 @@ public:
 		_global_action = std::move(global_action);
 	}
 
-  void reset_line_offset()
+  void _reset_line_offset()
   {
     _current_offset = 0;
   }
 
-  std::uint32_t& get_line_counter()
+  std::uint32_t& _get_line_counter()
   {
     return _current_line;
   }

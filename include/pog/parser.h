@@ -155,6 +155,16 @@ public:
     return _state;
   }
 
+  void reset_line_offset()
+  {
+    _tokenizer._reset_line_offset();
+  }
+
+  std::uint32_t& get_line_counter()
+  {
+    return _tokenizer._get_line_counter();
+  }
+
 	std::optional<ValueT> parse(std::string& contents)
 	{
     files.push(contents);
