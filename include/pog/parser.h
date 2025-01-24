@@ -145,6 +145,16 @@ public:
     return files.back();
   }
 
+  void set_compiler_state(HCAsm::CompilerState* state)
+  {
+    _state = state;
+  }
+
+  HCAsm::CompilerState* get_compiler_state()
+  {
+    return _state;
+  }
+
 	std::optional<ValueT> parse(std::string& contents)
 	{
     files.push(contents);
@@ -301,6 +311,7 @@ private:
 	std::vector<TokenBuilderType> _token_builders;
 
 	ParserReportType _report;
+  HCAsm::CompilerState* _state;
   std::queue<std::string> files;
 };
 

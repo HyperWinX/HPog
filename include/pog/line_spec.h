@@ -3,6 +3,12 @@
 #include <cstdint>
 #include <type_traits>
 
+namespace HCAsm {
+
+struct CompilerState;
+
+}
+
 namespace pog {
 
 struct LineSpecialization {
