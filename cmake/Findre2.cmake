@@ -38,7 +38,7 @@ if(RE2_INCLUDE_DIR AND RE2_LIBRARY)
 endif()
 
 find_package_handle_standard_args(
-	RE2
+	re2
 	REQUIRED_VARS
 		RE2_INCLUDE_DIR
 		RE2_LIBRARY
