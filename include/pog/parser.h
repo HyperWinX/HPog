@@ -3,7 +3,6 @@
 #include <queue>
 #include <deque>
 #include <type_traits>
-#include <unordered_map>
 
 #include <fmt/format.h>
 #ifdef POG_DEBUG
@@ -164,6 +163,10 @@ public:
   {
     return _tokenizer._get_line_counter();
   }
+
+	std::uint16_t& get_line_offset() {
+		return _tokenizer._get_line_offset();
+	}
 
 	std::optional<ValueT> parse(std::string& contents)
 	{

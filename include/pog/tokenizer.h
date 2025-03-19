@@ -146,6 +146,10 @@ public:
     return _current_line;
   }
 
+	std::uint16_t& _get_line_offset() {
+		return _current_offset;
+	}
+
 	std::optional<TokenMatchType> next_token()
 	{
 		bool repeat = true;
