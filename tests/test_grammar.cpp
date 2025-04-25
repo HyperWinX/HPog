@@ -60,7 +60,7 @@ AddRule) {
 	auto s2 = g.add_symbol(SymbolKind::Nonterminal, "B");
 	auto s3 = g.add_symbol(SymbolKind::Nonterminal, "C");
 
-	auto result = g.add_rule(s1, std::vector<const Symbol<int>*>{s2, s3}, [](auto&&) -> int { return 0; });
+	auto result = g.add_rule(s1, std::vector<const Symbol<int>*>{s2, s3}, [](auto&&...) -> int { return 0; });
 	EXPECT_EQ(g.get_rules().size(), 1u);
 	EXPECT_EQ(result->get_lhs(), s1);
 	EXPECT_EQ(result->get_rhs(), (std::vector<const Symbol<int>*>{s2, s3}));
@@ -74,9 +74,9 @@ GetRulesOfSymbol) {
 	auto s2 = g.add_symbol(SymbolKind::Nonterminal, "B");
 	auto s3 = g.add_symbol(SymbolKind::Nonterminal, "C");
 
-	auto r1 = g.add_rule(s1, std::vector<const Symbol<int>*>{s2, s3}, [](auto&&) -> int { return 0; });
-	auto r2 = g.add_rule(s1, std::vector<const Symbol<int>*>{}, [](auto&&) -> int { return 0; });
-	auto r3 = g.add_rule(s2, std::vector<const Symbol<int>*>{s1, s3}, [](auto&&) -> int { return 0; });
+	auto r1 = g.add_rule(s1, std::vector<const Symbol<int>*>{s2, s3}, [](auto&&...) -> int { return 0; });
+	auto r2 = g.add_rule(s1, std::vector<const Symbol<int>*>{}, [](auto&&...) -> int { return 0; });
+	auto r3 = g.add_rule(s2, std::vector<const Symbol<int>*>{s1, s3}, [](auto&&...) -> int { return 0; });
 
 	EXPECT_EQ(g.get_rules().size(), 3u);
 	EXPECT_EQ(g.get_rules_of_symbol(s1), (std::vector<const Rule<int>*>{r1, r2}));
@@ -92,9 +92,9 @@ GetRulesWithSymbol) {
 	auto s2 = g.add_symbol(SymbolKind::Nonterminal, "B");
 	auto s3 = g.add_symbol(SymbolKind::Nonterminal, "C");
 
-	auto r1 = g.add_rule(s1, std::vector<const Symbol<int>*>{s2, s3}, [](auto&&) -> int { return 0; });
-	auto r2 = g.add_rule(s1, std::vector<const Symbol<int>*>{}, [](auto&&) -> int { return 0; });
-	auto r3 = g.add_rule(s2, std::vector<const Symbol<int>*>{s1, s3}, [](auto&&) -> int { return 0; });
+	auto r1 = g.add_rule(s1, std::vector<const Symbol<int>*>{s2, s3}, [](auto&&...) -> int { return 0; });
+	auto r2 = g.add_rule(s1, std::vector<const Symbol<int>*>{}, [](auto&&...) -> int { return 0; });
+	auto r3 = g.add_rule(s2, std::vector<const Symbol<int>*>{s1, s3}, [](auto&&...) -> int { return 0; });
 	static_cast<void>(r2);
 
 	EXPECT_EQ(g.get_rules().size(), 3u);
@@ -124,10 +124,10 @@ Empty) {
 	auto S = g.add_symbol(SymbolKind::Nonterminal, "S");
 	auto A = g.add_symbol(SymbolKind::Nonterminal, "A");
 
-	g.add_rule(S, std::vector<const Symbol<int>*>{a, S, b}, [](auto&&) -> int { return 0; });
-	g.add_rule(S, std::vector<const Symbol<int>*>{a, b}, [](auto&&) -> int { return 0; });
-	g.add_rule(A, std::vector<const Symbol<int>*>{a}, [](auto&&) -> int { return 0; });
-	g.add_rule(A, std::vector<const Symbol<int>*>{}, [](auto&&) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{a, S, b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{a, b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(A, std::vector<const Symbol<int>*>{a}, [](auto&&...) -> int { return 0; });
+	g.add_rule(A, std::vector<const Symbol<int>*>{}, [](auto&&...) -> int { return 0; });
 
 	EXPECT_FALSE(g.empty(a));
 	EXPECT_FALSE(g.empty(b));
@@ -147,11 +147,11 @@ First) {
 	auto S = g.add_symbol(SymbolKind::Nonterminal, "S");
 	auto A = g.add_symbol(SymbolKind::Nonterminal, "A");
 
-	g.add_rule(S, std::vector<const Symbol<int>*>{a, S, b}, [](auto&&) -> int { return 0; });
-	g.add_rule(S, std::vector<const Symbol<int>*>{a, b}, [](auto&&) -> int { return 0; });
-	g.add_rule(S, std::vector<const Symbol<int>*>{b}, [](auto&&) -> int { return 0; });
-	g.add_rule(A, std::vector<const Symbol<int>*>{a}, [](auto&&) -> int { return 0; });
-	g.add_rule(A, std::vector<const Symbol<int>*>{}, [](auto&&) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{a, S, b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{a, b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(A, std::vector<const Symbol<int>*>{a}, [](auto&&...) -> int { return 0; });
+	g.add_rule(A, std::vector<const Symbol<int>*>{}, [](auto&&...) -> int { return 0; });
 
 	EXPECT_EQ(g.first(a), (std::unordered_set<const Symbol<int>*>{a}));
 	EXPECT_EQ(g.first(b), (std::unordered_set<const Symbol<int>*>{b}));
@@ -172,11 +172,11 @@ Follow) {
 	auto S = g.add_symbol(SymbolKind::Nonterminal, "S");
 	auto A = g.add_symbol(SymbolKind::Nonterminal, "A");
 
-	g.add_rule(S, std::vector<const Symbol<int>*>{a, S, b}, [](auto&&) -> int { return 0; });
-	g.add_rule(S, std::vector<const Symbol<int>*>{a, b}, [](auto&&) -> int { return 0; });
-	g.add_rule(S, std::vector<const Symbol<int>*>{b}, [](auto&&) -> int { return 0; });
-	g.add_rule(A, std::vector<const Symbol<int>*>{a, A}, [](auto&&) -> int { return 0; });
-	g.add_rule(A, std::vector<const Symbol<int>*>{}, [](auto&&) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{a, S, b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{a, b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(S, std::vector<const Symbol<int>*>{b}, [](auto&&...) -> int { return 0; });
+	g.add_rule(A, std::vector<const Symbol<int>*>{a, A}, [](auto&&...) -> int { return 0; });
+	g.add_rule(A, std::vector<const Symbol<int>*>{}, [](auto&&...) -> int { return 0; });
 
 	EXPECT_EQ(g.follow(S), (std::unordered_set<const Symbol<int>*>{b}));
 	EXPECT_EQ(g.follow(A), (std::unordered_set<const Symbol<int>*>{}));

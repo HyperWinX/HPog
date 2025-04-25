@@ -63,7 +63,7 @@ public:
 		}
 
 		if (!rule)
-			rule = grammar.add_rule(lhs_sym, rhs_syms, [](auto&&) -> int { return 0; });
+			rule = grammar.add_rule(lhs_sym, rhs_syms, [](auto&&...) -> int { return 0; });
 
 		state.add_item(Item<int>{rule, left_rhs.size()});
 	}

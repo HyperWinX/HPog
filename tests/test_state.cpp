@@ -19,7 +19,7 @@ SimpleState) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 
@@ -32,7 +32,7 @@ SetIndex) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	state.set_index(2);
@@ -46,8 +46,8 @@ AddItem) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	auto result1 = state.add_item(Item<int>{&rule1, 0});
@@ -63,8 +63,8 @@ AddItemAlreadyExists) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	auto result1 = state.add_item(Item<int>{&rule1, 0});
@@ -80,9 +80,9 @@ ItemsAreSorted) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(44, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule3(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(44, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule3(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	state.add_item(Item<int>{&rule1, 0});
@@ -99,9 +99,9 @@ ItemAreIterable) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(44, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule3(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(44, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule3(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	auto result1 = state.add_item(Item<int>{&rule1, 0});
@@ -119,9 +119,9 @@ AddTransition) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule3(44, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule3(44, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state1(1);
 	state1.add_item(Item<int>{&rule1, 0});
@@ -141,9 +141,9 @@ AddBackTransition) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule3(44, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule3(44, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state1(1);
 	state1.add_item(Item<int>{&rule1, 0});
@@ -166,8 +166,8 @@ IsAccepting) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state1(1);
 	state1.add_item(Item<int>{&rule1, 0});
@@ -186,8 +186,8 @@ ToString) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, auto&&) -> int { return 0; });
+	Rule<int> rule2(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	state.add_item(Item<int>{&rule1, 0});
@@ -202,7 +202,7 @@ GetProductionItems) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	state.add_item(Item<int>{&rule, 0});
@@ -221,7 +221,7 @@ Contains) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	state.add_item(Item<int>{&rule, 0});
@@ -237,7 +237,7 @@ Equality) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state1(1);
 	state1.add_item(Item<int>{&rule, 0});
@@ -263,7 +263,7 @@ Kernel) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, auto&&) -> int { return 0; });
 
 	State<int> state(1);
 	state.add_item(Item<int>{&rule, 0});

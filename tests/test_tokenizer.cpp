@@ -275,8 +275,8 @@ EnterState) {
 
 	Tokenizer<int> t(&grammar);
 
-	auto a_t = t.add_token("aaa", a, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
-	auto b_t = t.add_token("bbb", b, std::vector<std::string>{"state1"});
+	[[maybe_unused]] auto a_t = t.add_token("aaa", a, std::vector<std::string>{std::string{decltype(t)::DefaultState}});
+	[[maybe_unused]] auto b_t = t.add_token("bbb", b, std::vector<std::string>{"state1"});
 	t.prepare();
 
 	t.enter_state("state1");

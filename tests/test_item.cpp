@@ -11,7 +11,7 @@ SimpleItem) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule);
 
 	EXPECT_EQ(item.get_rule(), &rule);
@@ -29,7 +29,7 @@ SimpleItemWithReadPosShifted) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 1);
 
 	EXPECT_EQ(item.get_rule(), &rule);
@@ -47,7 +47,7 @@ SimpleItemWithReadPosAtTheEnd) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 2);
 
 	EXPECT_EQ(item.get_rule(), &rule);
@@ -65,7 +65,7 @@ SimpleAcceptingItem) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::End, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 1);
 
 	EXPECT_EQ(item.get_rule(), &rule);
@@ -83,7 +83,7 @@ LeftSideWithoutReadSymbol) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 1);
 
 	EXPECT_EQ(item.get_left_side_without_read_symbol(), std::vector<const Symbol<int>*>{&s2});
@@ -94,7 +94,7 @@ LeftSideWithoutReadSymbolWhenReadPosAtStart) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 0);
 
 	EXPECT_EQ(item.get_left_side_without_read_symbol(), std::vector<const Symbol<int>*>{});
@@ -105,7 +105,7 @@ RightSideWithoutReadSymbol) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 0);
 
 	EXPECT_EQ(item.get_right_side_without_read_symbol(), std::vector<const Symbol<int>*>{&s3});
@@ -116,7 +116,7 @@ RightSideWithoutReadSymbolWhenNothingIsReturned) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 1);
 
 	EXPECT_EQ(item.get_right_side_without_read_symbol(), std::vector<const Symbol<int>*>{});
@@ -127,7 +127,7 @@ Step) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 0);
 
 	item.step();
@@ -143,7 +143,7 @@ StepBack) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 2);
 
 	item.step_back();
@@ -159,7 +159,7 @@ ToString) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 1);
 
 	EXPECT_EQ(item.to_string(), "1 -> 2 <*> 3");
@@ -168,7 +168,7 @@ ToString) {
 TEST_F(TestItem,
 EpsilonToString) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
-	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule(42, &s1, std::vector<const Symbol<int>*>{}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item(&rule, 0);
 
 	EXPECT_EQ(item.to_string(), "1 -> <*> <eps>");
@@ -179,9 +179,9 @@ Equality) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(42, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule3(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
+	Rule<int> rule2(42, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
+	Rule<int> rule3(43, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item1(&rule1, 1);
 	Item<int> item2(&rule2, 1);
 	Item<int> item3(&rule3, 1);
@@ -201,8 +201,8 @@ LessThanDifferentRule) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(41, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
+	Rule<int> rule2(41, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item1(&rule1, 0);
 	Item<int> item2(&rule2, 0);
 
@@ -214,8 +214,8 @@ LessThanDifferentReadPos) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(42, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
+	Rule<int> rule2(42, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item1(&rule1, 0);
 	Item<int> item2(&rule2, 1);
 
@@ -227,8 +227,8 @@ LessThanWithKernelItemPriority) {
 	Symbol<int> s1(1, SymbolKind::Nonterminal, "1");
 	Symbol<int> s2(2, SymbolKind::Nonterminal, "2");
 	Symbol<int> s3(3, SymbolKind::Nonterminal, "3");
-	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](std::vector<int>&&) -> int { return 0; });
-	Rule<int> rule2(41, &s1, std::vector<const Symbol<int>*>{&s2}, [](std::vector<int>&&) -> int { return 0; });
+	Rule<int> rule1(42, &s1, std::vector<const Symbol<int>*>{&s2, &s3}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
+	Rule<int> rule2(41, &s1, std::vector<const Symbol<int>*>{&s2}, [](Parser<int>&, std::vector<TokenWithLineSpec<int>>&&) -> int { return 0; });
 	Item<int> item1(&rule1, 1);
 	Item<int> item2(&rule2, 0);
 

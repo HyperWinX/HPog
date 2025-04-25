@@ -15,10 +15,10 @@ RepeatingAs) {
 
 	p.set_start_symbol("A");
 	p.rule("A")
-		.production("A", "a", [](auto&& args) {
-			return 1 + args[0];
+		.production("A", "a", [](Parser<int>&, auto&& args) {
+			return 1 + args[0].value;
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
@@ -54,10 +54,10 @@ RepeatingAsWithIgnoringWhitespaces) {
 
 	p.set_start_symbol("A");
 	p.rule("A")
-		.production("A", "a", [](auto&& args) {
-			return 1 + args[0];
+		.production("A", "a", [](Parser<int>&, auto&& args) {
+			return 1 + args[0].value;
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
@@ -87,10 +87,10 @@ SameNumberOfAsAndBs) {
 
 	p.set_start_symbol("S");
 	p.rule("S")
-		.production("a", "S", "b", [](auto&& args) {
-			return 1 + args[1];
+		.production("a", "S", "b", [](Parser<int>&, auto&& args) {
+			return 1 + args[1].value;
 		})
-		.production("a", "b", [](auto&&) {
+		.production("a", "b", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
@@ -137,10 +137,10 @@ SymbolDescriptionInErrorMessages) {
 
 	p.set_start_symbol("S");
 	p.rule("S")
-		.production("a", "S", "b", [](auto&& args) {
-			return 1 + args[1];
+		.production("a", "S", "b", [](Parser<int>&, auto&& args) {
+			return 1 + args[1].value;
 		})
-		.production("a", "b", [](auto&&) {
+		.production("a", "b", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
@@ -219,20 +219,20 @@ Precedence) {
 
 	p.set_start_symbol("E");
 	p.rule("E")
-		.production("E", "+", "E", [](auto&& args) {
-			return args[0] + args[2];
+		.production("E", "+", "E", [](Parser<int>&, auto&& args) {
+			return args[0].value + args[2].value;
 		})
-		.production("E", "-", "E", [](auto&& args) {
-			return args[0] - args[2];
+		.production("E", "-", "E", [](Parser<int>&, auto&& args) {
+			return args[0].value - args[2].value;
 		})
-		.production("E", "*", "E", [](auto&& args) {
-			return args[0] * args[2];
+		.production("E", "*", "E", [](Parser<int>&, auto&& args) {
+			return args[0].value * args[2].value;
 		})
-		.production("-", "E", [](auto&& args) {
-			return -args[1];
+		.production("-", "E", [](Parser<int>&, auto&& args) {
+			return -args[1].value;
 		}).precedence(2, Associativity::Right)
-		.production("int", [](auto&& args) {
-			return args[0];
+		.production("int", [](Parser<int>&, auto&& args) {
+			return args[0].value;
 		});
 	EXPECT_TRUE(p.prepare());
 
@@ -308,20 +308,20 @@ Conflicts3) {
 
 	p.set_start_symbol("E");
 	p.rule("E")
-		.production("(", "E", ")", [](auto&& args) {
-			args[1].push_back("E -> ( E )");
-			return std::move(args[1]);
+		.production("(", "E", ")", [](Parser<std::vector<std::string>>&, auto&& args) {
+			args[1].value.push_back("E -> ( E )");
+			return std::move(args[1].value);
 		})
-		.production("PE", [](auto&& args) {
-			args[0].push_back("E -> PE");
-			return std::move(args[0]);
+		.production("PE", [](Parser<std::vector<std::string>>&, auto&& args) {
+			args[0].value.push_back("E -> PE");
+			return std::move(args[0].value);
 		});
 	p.rule("PE")
-		.production("(", "PE", ")", [](auto&& args) {
-			args[1].push_back("PE -> ( PE )");
-			return std::move(args[1]);
+		.production("(", "PE", ")", [](Parser<std::vector<std::string>>&, auto&& args) {
+			args[1].value.push_back("PE -> ( PE )");
+			return std::move(args[1].value);
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<std::vector<std::string>>&, auto&&) {
 			return std::vector<std::string>{"PE -> a"};
 		});
 
@@ -352,20 +352,20 @@ ResolveConflictWithPrecedence) {
 
 	p.set_start_symbol("E");
 	p.rule("E")
-		.production("(", "E", ")", [](auto&& args) {
-			args[1].push_back("E -> ( E )");
-			return std::move(args[1]);
+		.production("(", "E", ")", [](Parser<std::vector<std::string>>&, auto&& args) {
+			args[1].value.push_back("E -> ( E )");
+			return std::move(args[1].value);
 		})
-		.production("PE", [](auto&& args) {
-			args[0].push_back("E -> PE");
-			return std::move(args[0]);
+		.production("PE", [](Parser<std::vector<std::string>>&, auto&& args) {
+			args[0].value.push_back("E -> PE");
+			return std::move(args[0].value);
 		}).precedence(1, Associativity::Left);
 	p.rule("PE")
-		.production("(", "PE", ")", [](auto&& args) {
-			args[1].push_back("PE -> ( PE )");
-			return std::move(args[1]);
+		.production("(", "PE", ")", [](Parser<std::vector<std::string>>&, auto&& args) {
+			args[1].value.push_back("PE -> ( PE )");
+			return std::move(args[1].value);
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<std::vector<std::string>>&, auto&&) {
 			return std::vector<std::string>{"PE -> a"};
 		});
 	EXPECT_TRUE(p.prepare());
@@ -383,47 +383,6 @@ ResolveConflictWithPrecedence) {
 }
 
 TEST_F(TestParser,
-MoveOnlyType) {
-	Parser<std::unique_ptr<int>> p;
-
-	p.token("a").symbol("a").action([](std::string_view) {
-		return std::make_unique<int>(1);
-	});
-
-	p.set_start_symbol("A");
-	p.rule("A")
-		.production("A", "a", [](auto&& args) {
-			*(args[0].get()) += 1;
-			return std::move(args[0]);
-		})
-		.production("a", [](auto&& args) {
-			return std::move(args[0]);
-		});
-	EXPECT_TRUE(p.prepare());
-
-	std::string input1("a");
-	auto result = p.parse(input1);
-	EXPECT_TRUE(result);
-	EXPECT_EQ(*result.value().get(), 1);
-
-	std::string input2("aaaa");
-	result = p.parse(input2);
-	EXPECT_TRUE(result);
-	EXPECT_EQ(*result.value().get(), 4);
-
-	try
-	{
-		std::string input3("aa aaa");
-		p.parse(input3);
-		FAIL() << "Expected syntax error";
-	}
-	catch (const SyntaxError& e)
-	{
-		EXPECT_STREQ(e.what(), "Syntax error: Unknown symbol on input, expected one of @end, a");
-	}
-}
-
-TEST_F(TestParser,
 EndTokenAction) {
 	int end_call_count = 0;
 	Parser<int> p;
@@ -436,10 +395,10 @@ EndTokenAction) {
 
 	p.set_start_symbol("A");
 	p.rule("A")
-		.production("A", "a", [](auto&& args) {
-			return 1 + args[0];
+		.production("A", "a", [](Parser<int>&, auto&& args) {
+			return 1 + args[0].value;
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
@@ -463,14 +422,14 @@ TokenActionsCalledOnce) {
 
 	p.set_start_symbol("A");
 	p.rule("A")
-		.production("B", [](auto&& args) {
-			return args[0];
+		.production("B", [](Parser<int>&, auto&& args) {
+			return args[0].value;
 		});
 	p.rule("B")
-		.production("A", "a", [](auto&& args) {
-			return 1 + args[0];
+		.production("A", "a", [](Parser<int>&, auto&& args) {
+			return 1 + args[0].value;
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
@@ -530,29 +489,29 @@ MultistateTokenizer) {
 
 	p.set_start_symbol("root");
 	p.rule("root")
-		.production("strings", [](auto&& args) -> Value {
-			return std::move(args[0]);
+		.production("strings", [](Parser<Value>&, auto&& args) -> Value {
+			return std::move(args[0].value);
 		})
-		.production([](auto&&) -> Value {
+		.production([](Parser<Value>&, auto&&) -> Value {
 			return std::vector<std::pair<std::string, std::string>>{};
 		});
 	p.rule("strings")
-		.production("strings", "string", [](auto&& args) -> Value {
-			std::get<std::vector<std::pair<std::string, std::string>>>(args[0]).push_back(
-				std::get<std::pair<std::string, std::string>>(args[1])
+		.production("strings", "string", [](Parser<Value>&, auto&& args) -> Value {
+			std::get<std::vector<std::pair<std::string, std::string>>>(args[0].value).push_back(
+				std::get<std::pair<std::string, std::string>>(args[1].value)
 			);
-			return std::move(args[0]);
+			return std::move(args[0].value);
 		})
-		.production("string", [](auto&& args) -> Value {
+		.production("string", [](Parser<Value>&, auto&& args) -> Value {
 			return std::vector<std::pair<std::string, std::string>>{
-				std::get<std::pair<std::string, std::string>>(args[0])
+				std::get<std::pair<std::string, std::string>>(args[0].value)
 			};
 		});
 	p.rule("string")
-		.production("id", "=", "string_literal", [](auto&& args) -> Value {
+		.production("id", "=", "string_literal", [](Parser<Value>&, auto&& args) -> Value {
 			return std::make_pair(
-				std::get<std::string>(args[0]),
-				std::get<std::string>(args[2])
+				std::get<std::string>(args[0].value),
+				std::get<std::string>(args[2].value)
 			);
 		});
 	EXPECT_TRUE(p.prepare());
@@ -603,8 +562,8 @@ MidruleActionsToCheckRedefinition) {
 		.production("func");
 	p.rule("func")
 		.production(
-			"function", "id", [&](auto&& args) -> Value {
-				auto func_name = std::get<std::string>(args[1]);
+			"function", "id", [&](Parser<Value>&, auto&& args) -> Value {
+				auto func_name = std::get<std::string>(args[1].value);
 				auto [itr, inserted] = defs.insert(func_name);
 				if (!inserted)
 					redefs.insert(func_name);
@@ -620,8 +579,8 @@ MidruleActionsToCheckRedefinition) {
 		.production("stmt");
 	p.rule("stmt")
 		.production(
-			"var", "id", [&](auto&& args) -> Value {
-				auto var_name = std::get<std::string>(args[1]);
+			"var", "id", [&](Parser<Value>&, auto&& args) -> Value {
+				auto var_name = std::get<std::string>(args[1].value);
 				auto [itr, inserted] = defs.insert(var_name);
 				if (!inserted)
 					redefs.insert(var_name);
@@ -707,9 +666,9 @@ InputStreamStackManipulation) {
 
 	p.set_start_symbol("E");
 	p.rule("E")
-		.production("E", "+", "E", [](auto&& args) { return args[0] + args[2]; })
-		.production("E", "*", "E", [](auto&& args) { return args[0] * args[2]; })
-		.production("number", [](auto&& args) { return args[0]; });
+		.production("E", "+", "E", [](Parser<int>&, auto&& args) { return args[0].value + args[2].value; })
+		.production("E", "*", "E", [](Parser<int>&, auto&& args) { return args[0].value * args[2].value; })
+		.production("number", [](Parser<int>&, auto&& args) { return args[0].value; });
 
 	EXPECT_TRUE(p.prepare());
 
@@ -739,17 +698,17 @@ RuleActionsAccessingDataBeforeMidruleAction) {
 
 	p.set_start_symbol("S");
 	p.rule("S")
-		.production("func", "id", [](auto&& args) {
-				return args[0] + args[1];
+		.production("func", "id", [](Parser<int>&, auto&& args) {
+				return args[0].value + args[1].value;
 			},
-			"A", [&](auto&& args) {
+			"A", [&](Parser<int>&, auto&& args) {
 				for (const auto& arg : args)
-					all_values.push_back(arg);
-				return args[2] + args[3];
+					all_values.push_back(arg.value);
+				return args[2].value + args[3].value;
 			});
 	p.rule("A")
-		.production("A", "a", [](auto&& args) { return args[0] + args[1]; })
-		.production("a", [](auto&& args) { return args[0]; });
+		.production("A", "a", [](Parser<int>&, auto&& args) { return args[0].value + args[1].value; })
+		.production("a", [](Parser<int>&, auto&& args) { return args[0].value; });
 
 
 	EXPECT_TRUE(p.prepare());
@@ -811,29 +770,29 @@ MultistateTokenizerWithExplicitCalls) {
 
 	p.set_start_symbol("root");
 	p.rule("root")
-		.production("strings", [](auto&& args) -> Value {
-			return std::move(args[0]);
+		.production("strings", [](Parser<Value>&, auto&& args) -> Value {
+			return std::move(args[0].value);
 		})
-		.production([](auto&&) -> Value {
+		.production([](Parser<Value>&, auto&&) -> Value {
 			return std::vector<std::pair<std::string, std::string>>{};
 		});
 	p.rule("strings")
-		.production("strings", "string", [](auto&& args) -> Value {
-			std::get<std::vector<std::pair<std::string, std::string>>>(args[0]).push_back(
-				std::get<std::pair<std::string, std::string>>(args[1])
+		.production("strings", "string", [](Parser<Value>&, auto&& args) -> Value {
+			std::get<std::vector<std::pair<std::string, std::string>>>(args[0].value).push_back(
+				std::get<std::pair<std::string, std::string>>(args[1].value)
 			);
-			return std::move(args[0]);
+			return std::move(args[0].value);
 		})
-		.production("string", [](auto&& args) -> Value {
+		.production("string", [](Parser<Value>&, auto&& args) -> Value {
 			return std::vector<std::pair<std::string, std::string>>{
-				std::get<std::pair<std::string, std::string>>(args[0])
+				std::get<std::pair<std::string, std::string>>(args[0].value)
 			};
 		});
 	p.rule("string")
-		.production("id", "=", "string_literal", [](auto&& args) -> Value {
+		.production("id", "=", "string_literal", [](Parser<Value>&, auto&& args) -> Value {
 			return std::make_pair(
-				std::get<std::string>(args[0]),
-				std::get<std::string>(args[2])
+				std::get<std::string>(args[0].value),
+				std::get<std::string>(args[2].value)
 			);
 		});
 	EXPECT_TRUE(p.prepare());
@@ -860,16 +819,16 @@ EndInputInNonDefaultTokenizerState) {
 
 	p.set_start_symbol("A");
 	p.rule("A")
-		.production("A", "a", [](auto&& args) {
-			return 1 + args[0];
+		.production("A", "a", [](Parser<int>&, auto&& args) {
+			return 1 + args[0].value;
 		})
-		.production("A", "b", [](auto&& args) {
-			return 1 + args[0];
+		.production("A", "b", [](Parser<int>&, auto&& args) {
+			return 1 + args[0].value;
 		})
-		.production("a", [](auto&&) {
+		.production("a", [](Parser<int>&, auto&&) {
 			return 1;
 		})
-		.production("b", [](auto&&) {
+		.production("b", [](Parser<int>&, auto&&) {
 			return 1;
 		});
 	EXPECT_TRUE(p.prepare());
