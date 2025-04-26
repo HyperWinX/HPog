@@ -42,6 +42,7 @@ set(POG_PC_INSTALL_FILES     "${POG_PC_CONFIG_FILE}")
 find_package(Threads REQUIRED)
 find_package(re2 REQUIRED)
 find_package(fmt REQUIRED)
+find_package(GTest REQUIRED)
 
 ## Add deps folder to resolve bundled dependencies.
 add_subdirectory(tests)
